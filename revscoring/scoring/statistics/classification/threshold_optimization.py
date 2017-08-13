@@ -4,8 +4,8 @@ import re
 class ThresholdOptimization:
     STRING_PATTERN = re.compile(
         r"(maximum|minimum) "
-        r"([^\W\d][\w]*) @ "  # target_stat
-        r"([^\W\d][\w]*) "  # cond_stat
+        r"((!|[^\W\d])[\w]*) @ "  # target_stat
+        r"((!|[^\W\d])[\w]*) "  # cond_stat
         r"(>=|<=) "  # greater
         r"([-+]?([0-9]*\.[0-9]+|[0-9]+))")  # cond_value
 
@@ -105,7 +105,7 @@ class ThresholdOptimization:
                              .format(pattern) +
                              '"(maximum|minimum) <target> @ ' +
                              '<cond> (>=|<=) [float]"')
-        maximize, target, cond, greater, cond_value, _ = match.groups()
+        maximize, target, _, cond, _, greater, cond_value, _ = match.groups()
         return cls(maximize == "maximum",
                    target, cond,
                    greater == ">=",
